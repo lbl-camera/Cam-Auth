@@ -39,22 +39,20 @@ def is_remote_session():
 
 
 class RedirectHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        self.wfile.write(b'You\'re all set, you can close this window!')
 
-        def do_GET(self):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-            self.wfile.write(b'You\'re all set, you can close this window!')
+        code = parse_qs(urlparse(self.path).query).get('code', [''])[0]
+        self.server.return_code(code)
 
-            code = parse_qs(urlparse(self.path).query).get('code', [''])[0]
-            self.server.return_code(code)
-
-        def log_message(self, format, *args):
-            return
+    def log_message(self, format, *args):
+        return
 
 
 class RedirectHTTPServer(HTTPServer, object):
-
     def __init__(self, listen, handler_class, https=False):
         super(RedirectHTTPServer, self).__init__(listen, handler_class)
 

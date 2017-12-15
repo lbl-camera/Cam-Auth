@@ -11,11 +11,9 @@ from globus_sdk import (NativeAppAuthClient, TransferClient,
 
 CLIENT_ID = 'd7fb8a54-25bd-4337-bc92-e7c26e2c4c5b'
 REDIRECT_URI = 'http://localhost:8000'
-SCOPES = ('openid email profile '
-          'urn:globus:auth:scope:transfer.api.globus.org:all '
-          'urn:globus:auth:scope:datasearch.api.globus.org:all')
-
-TUTORIAL_ENDPOINT_ID = 'ddb59aef-6d04-11e5-ba46-22000b92c6ec'
+SCOPES = ('openid email profile')
+# 'urn:globus:auth:scope:transfer.api.globus.org:all '
+# 'urn:globus:auth:scope:datasearch.api.globus.org:all')
 
 SERVER_ADDRESS = ('127.0.0.1', 8000)
 

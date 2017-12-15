@@ -1,11 +1,18 @@
 from auth import do_native_app_authentication, CLIENT_ID, REDIRECT_URI, AccessTokenAuthorizer, AuthClient
 import requests, json
+from typing import List
 
 TOKEN = None  # 'AgDrd7DEnBmMxzP1b7jzXKXn70e7mrbdqdbPVx7zy9M8KNkQBNcaCxjYaar8w6N9Mp3l7zN46M3GK7TwDQ3mgIEEb1Uqq7NSjjPk'
 ID = None
 SERVER = 'http://127.0.0.1:5000'
 
+
 def authenticate():
+    """
+    Starts a local oauth2 server, launches a browser pointing to localhost. After oauth2 flow, the auth token and ID are
+    returned.
+    """
+
     global TOKEN, ID
 
     # Get tokens by doing native app authentication
@@ -19,46 +26,53 @@ def authenticate():
     return TOKEN, ID
 
 
-def add_user(id=None):
+def add_user(id=None) -> dict:
     if not id: id = ID
     data = {'id': id,
             'membergroups': [],
             'admingroups': []}
     return _post('permissions', data)
 
-def add_member_to_group(group, id=None):
+
+def add_member_to_group(group, id=None) -> dict:
     if not id: id = ID
     return _get(f'membergroups/{id}/{group}')
 
-def add_admin_to_group(group, id):
+
+def add_admin_to_group(group, id) -> dict:
     return _get(f'admingroups/{id}/{group}')
 
-def delete_member_from_group(group, id=None):
+
+def delete_member_from_group(group, id=None) -> dict:
     if not id: id = ID
     return _delete(f'membergroups/{id}/{group}')
 
-def create_group(group):
+
+def create_group(group) -> dict:
     return _get(f'admingroups/{ID}/{group}')
 
-def get_groups():
+
+def get_groups() -> List[str]:
     user = _get('permissions')['_items'][0]
     return user['membergroups'] + user['admingroups']
 
 
-
-def _post(path, data):
+def _post(path, data) -> dict:
     content = json.loads(requests.post(f'{SERVER}/{path}', json.dumps(data),
-                                    headers={'Content-Type': 'application/json', 'Authorization': TOKEN}).content)
-    if content.get('_status')=='ERR': raise Exception('Post failed')
+                                       headers={'Content-Type': 'application/json', 'Authorization': TOKEN}).content)
+    if content.get('_status') == 'ERR': raise Exception('Post failed')
     return content
 
-def _get(path):
+
+def _get(path) -> dict:
     content = json.loads(requests.get(f'{SERVER}/{path}', headers={'Authorization': TOKEN}).content)
-    if content.get('_status')=='ERR': raise Exception('Get failed')
+    if content.get('_status') == 'ERR': raise Exception('Get failed')
     return content
 
-def _delete(path):
+
+def _delete(path) -> dict:
     # etag = _get(path)['_etag']
-    content = json.loads(requests.delete(f'{SERVER}/{path}', headers={'Authorization': TOKEN}).content)#, 'If-Match': etag
-    if content.get('_status')=='ERR': raise Exception('Delete failed')
+    content = json.loads(
+        requests.delete(f'{SERVER}/{path}', headers={'Authorization': TOKEN}).content)  # , 'If-Match': etag
+    if content.get('_status') == 'ERR': raise Exception('Delete failed')
     return content

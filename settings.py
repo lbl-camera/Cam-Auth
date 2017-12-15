@@ -32,21 +32,22 @@ schema = {
         # 'isgroupunique': True,
     },
     'membergroups': {
-        'type':'list',
+        'type': 'list',
         'required': True,
         'default': [],
-        'schema': { 'type': 'string',
-                    }
+        'schema': {'type': 'string',
+                   }
     },
     'admingroups': {
-        'type':'list',
+        'type': 'list',
         'required': True,
         'default': [],
-        'schema': { 'type': 'string',
-                    }
-        
+        'schema': {'type': 'string',
+                   }
+
     },
 }
+
 
 class GlobusTokenAuth(TokenAuth):
     def check_auth(self, token, allowed_roles, resource, method):
@@ -61,6 +62,7 @@ class GlobusTokenAuth(TokenAuth):
             return ac.oauth2_userinfo().http_status == 200
         except AuthAPIError:
             return False
+
 
 permissions = {
     # 'title' tag used in item links. Defaults to the resource title minus
@@ -97,7 +99,7 @@ permissions = {
 DOMAIN = {
     'permissions': permissions,
     'membergroups': {'url': 'membergroups/<regex("[\w@.]+"):id>/<regex("[\w]+"):membergroups>',
-                     'authentication': GlobusTokenAuth,},
-    'admingroups':  {'url': 'admingroups/<regex("[\w@.]+"):id>/<regex("[\w]+"):admingroups>',
-                     'authentication': GlobusTokenAuth,},
+                     'authentication': GlobusTokenAuth, },
+    'admingroups': {'url': 'admingroups/<regex("[\w@.]+"):id>/<regex("[\w]+"):admingroups>',
+                    'authentication': GlobusTokenAuth, },
 }

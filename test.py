@@ -12,6 +12,7 @@ import api
 api.TOKEN = 'test'
 api.ID = 'test'
 
+
 def test_api():
     # Create self user
     api.add_user()
@@ -26,10 +27,10 @@ def test_api():
     api.add_member_to_group('foo')
 
     # delete them from the group
-    api.delete_member_from_group('foo','jerry@parks.com')
+    api.delete_member_from_group('foo', 'jerry@parks.com')
 
     # make them an admin
-    api.add_admin_to_group('foo','jerry@parks.com')
+    api.add_admin_to_group('foo', 'jerry@parks.com')
 
     with pytest.raises(Exception) as e_info:
         api.create_group('foo')
@@ -38,7 +39,7 @@ def test_api():
         api.add_user('jerry@parks.com')
 
     # Delete doesn't fail if that group isn't in that record
-    api.delete_member_from_group('foo','jerry@parks.com')
+    api.delete_member_from_group('foo', 'jerry@parks.com')
 
     # the auth'd user can only see their own record
-    assert len(api._get('permissions/')['_items'])==1
+    assert len(api._get('permissions/')['_items']) == 1
