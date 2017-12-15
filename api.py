@@ -2,7 +2,7 @@ from auth import do_native_app_authentication, CLIENT_ID, REDIRECT_URI, AccessTo
 import requests, json
 from typing import List
 
-TOKEN = None  # 'AgDrd7DEnBmMxzP1b7jzXKXn70e7mrbdqdbPVx7zy9M8KNkQBNcaCxjYaar8w6N9Mp3l7zN46M3GK7TwDQ3mgIEEb1Uqq7NSjjPk'
+TOKEN = None
 ID = None
 SERVER = 'http://127.0.0.1:5000'
 
